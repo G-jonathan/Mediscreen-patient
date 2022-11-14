@@ -71,7 +71,7 @@ public class PatientController {
      */
     @PostMapping("/patients")
     public ResponseEntity<EntityModel<Patient>> addPatient(@Valid @RequestBody Patient newPatient) {
-        LOGGER.info("[CONTROLLER] Request URL: POST /patients/add");
+        LOGGER.info("[CONTROLLER] Request URL: POST /patients");
         EntityModel<Patient> patientEntityModel = patientModelAssembler
                 .toModel(patientService.addPatient(newPatient));
         return ResponseEntity
@@ -88,7 +88,7 @@ public class PatientController {
      */
     @PutMapping("/patients/{id}")
     public ResponseEntity<EntityModel<Patient>> updatePatient(@Valid @RequestBody Patient newPatient, @PathVariable int id) {
-        LOGGER.info("[CONTROLLER] Request URL: PUT /patients/update/{id}");
+        LOGGER.info("[CONTROLLER] Request URL: PUT /patients/{id}");
         Patient actualPatient = patientService.getPatientById(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
         Patient updatedPatient = patientService.updatePatient(actualPatient, newPatient);
