@@ -9,5 +9,4 @@ class MediscreenPatientApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
