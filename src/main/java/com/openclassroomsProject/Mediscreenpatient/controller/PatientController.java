@@ -40,7 +40,7 @@ public class PatientController {
      * @param id Identifier of the wanted patient.
      * @return HTTP Response with status code 200 and the requested resource.
      */
-    @GetMapping("/patients/{id}")
+    @GetMapping("/api/patients/{id}")
     public ResponseEntity<EntityModel<Patient>> getPatientById(@PathVariable int id) {
         LOGGER.info("[CONTROLLER] Request URL: GET /patients/{id}");
         Patient patient = patientService.getPatientById(id)
@@ -53,7 +53,7 @@ public class PatientController {
      *
      * @return HTTP Response with status code 200 and a collection of all patients found in the database.
      */
-    @GetMapping("/patients")
+    @GetMapping("/api/patients")
     public ResponseEntity<CollectionModel<EntityModel<Patient>>> getAllPatient() {
         LOGGER.info("[CONTROLLER] Request URL: GET /patients");
         List<EntityModel<Patient>> patientsList = patientService.getAllPatients().stream()
@@ -69,7 +69,7 @@ public class PatientController {
      * @param newPatient The patient to create.
      * @return HTTP Response wit status code 201 and the created resource.
      */
-    @PostMapping("/patients")
+    @PostMapping("/api/patients")
     public ResponseEntity<EntityModel<Patient>> addPatient(@Valid @RequestBody Patient newPatient) {
         LOGGER.info("[CONTROLLER] Request URL: POST /patients");
         EntityModel<Patient> patientEntityModel = patientModelAssembler
@@ -86,7 +86,7 @@ public class PatientController {
      * @param id         Identifier of the patient to modify.
      * @return HTTP response with status code 201 and the modified resource.
      */
-    @PutMapping("/patients/{id}")
+    @PutMapping("/api/patients/{id}")
     public ResponseEntity<EntityModel<Patient>> updatePatient(@Valid @RequestBody Patient newPatient, @PathVariable int id) {
         LOGGER.info("[CONTROLLER] Request URL: PUT /patients/{id}");
         Patient actualPatient = patientService.getPatientById(id)
@@ -104,7 +104,7 @@ public class PatientController {
      * @param id Identifier of the patient to delete.
      * @return HTTP response with status code 204.
      */
-    @DeleteMapping("/patients/{id}")
+    @DeleteMapping("/api/patients/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable int id) {
         LOGGER.info("[CONTROLLER] Request URL: DELETE /patients/{id}");
         patientService.getPatientById(id)
