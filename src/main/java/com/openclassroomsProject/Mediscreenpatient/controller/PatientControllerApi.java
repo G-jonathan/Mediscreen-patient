@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 @RestController
-public class PatientController {
-    private final Logger LOGGER = LoggerFactory.getLogger(PatientController.class);
+public class PatientControllerApi {
+    private final Logger LOGGER = LoggerFactory.getLogger(PatientControllerApi.class);
 
     @Autowired
     IPatientService patientService;
@@ -42,7 +42,7 @@ public class PatientController {
      */
     @GetMapping("/api/patients/{id}")
     public ResponseEntity<EntityModel<Patient>> getPatientById(@PathVariable int id) {
-        LOGGER.info("[CONTROLLER] Request URL: GET /patients/{id}");
+        LOGGER.info("[CONTROLLER] Request URL: GET /api/patients/{id}");
         Patient patient = patientService.getPatientById(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
         return ResponseEntity.ok(patientModelAssembler.toModel(patient));
@@ -55,12 +55,12 @@ public class PatientController {
      */
     @GetMapping("/api/patients")
     public ResponseEntity<CollectionModel<EntityModel<Patient>>> getAllPatient() {
-        LOGGER.info("[CONTROLLER] Request URL: GET /patients");
+        LOGGER.info("[CONTROLLER] Request URL: GET /api/patients");
         List<EntityModel<Patient>> patientsList = patientService.getAllPatients().stream()
                 .map(patientModelAssembler::toModel)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(CollectionModel.of(patientsList,
-                linkTo(methodOn(PatientController.class).getAllPatient()).withSelfRel()));
+                linkTo(methodOn(PatientControllerApi.class).getAllPatient()).withSelfRel()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class PatientController {
      */
     @PostMapping("/api/patients")
     public ResponseEntity<EntityModel<Patient>> addPatient(@Valid @RequestBody Patient newPatient) {
-        LOGGER.info("[CONTROLLER] Request URL: POST /patients");
+        LOGGER.info("[CONTROLLER] Request URL: POST /api/patients");
         EntityModel<Patient> patientEntityModel = patientModelAssembler
                 .toModel(patientService.addPatient(newPatient));
         return ResponseEntity
@@ -88,7 +88,7 @@ public class PatientController {
      */
     @PutMapping("/api/patients/{id}")
     public ResponseEntity<EntityModel<Patient>> updatePatient(@Valid @RequestBody Patient newPatient, @PathVariable int id) {
-        LOGGER.info("[CONTROLLER] Request URL: PUT /patients/{id}");
+        LOGGER.info("[CONTROLLER] Request URL: PUT /api/patients/{id}");
         Patient actualPatient = patientService.getPatientById(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
         Patient updatedPatient = patientService.updatePatient(actualPatient, newPatient);
@@ -106,7 +106,7 @@ public class PatientController {
      */
     @DeleteMapping("/api/patients/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable int id) {
-        LOGGER.info("[CONTROLLER] Request URL: DELETE /patients/{id}");
+        LOGGER.info("[CONTROLLER] Request URL: DELETE /api/patients/{id}");
         patientService.getPatientById(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
         patientService.deletePatientById(id);

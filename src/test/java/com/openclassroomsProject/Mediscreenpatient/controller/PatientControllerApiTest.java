@@ -25,7 +25,7 @@ import java.util.Objects;
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PatientControllerTest {
+class PatientControllerApiTest {
     private static final String LOCALHOST = "http://localhost:";
     private static final String URI = "/patients/";
     private static final long MILLIS = System.currentTimeMillis();

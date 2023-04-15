@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des patients</title>
+</head>
+<body>
+    <h1>Liste des patients</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Family</th>
+            <th>Given</th>
+            <th>Dob</th>
+            <th>Sex</th>
+            <th>Address</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patient : ${patients}">
+            <td th:text="${patient.id}"></td>
+            <td th:text="${patient.family}"></td>
+            <td th:text="${patient.given}"></td>
+            <td th:text="${patient.dob}"></td>
+            <td th:text="${patient.sex}"></td>
+            <td th:text="${patient.address}"></td>
+            <td th:text="${patient.phone}"></td>
+            <td>
+                <a th:href="@{/patients/{id}(id=${patient.id})}">Voir</a>
+            </td>
+            <td>
+                <form th:action="@{/patients/{id}(id=${patient.id})}" method="post" onsubmit="return confirm('Are you sure you want to delete this patient?')">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <td>
+                <a th:href="@{/updatePatient/{id}(id=${patient.id})}">Update</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/addPatient}">Add a patient</a>
+</body>
+</html>

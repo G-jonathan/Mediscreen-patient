@@ -19,7 +19,7 @@ import java.util.Map;
  * @version 1.0
  */
 @ControllerAdvice
-public class PatientNotFoundAdvice extends ResponseEntityExceptionHandler {
+public class PatientControllerAdvice extends ResponseEntityExceptionHandler {
 
     /**
      * Used to render an HTTP 404 and a body message when a PatientNotFoundException is thrown
