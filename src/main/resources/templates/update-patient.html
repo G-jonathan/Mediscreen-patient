@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Patient</title>
+</head>
+<body>
+    <h1>Update Patient</h1>
+    <form th:action="@{/update/{id}(id=${patient.id})}" th:object="${patient}" method="post" onsubmit="return confirm('Are you sure you want to update this patient?')">
+        <div>
+            <label for="family">Nom:</label>
+            <input type="text" id="family" name="family" th:value="${patient.family}" required>
+        </div>
+        <div>
+            <label for="given">Prénom:</label>
+            <input type="text" id="given" name="given" th:value="${patient.given}" required>
+        </div>
+        <div>
+            <label for="dob">Date de naissance:</label>
+            <input type="date" id="dob" name="dob" th:value="${patient.dob}" required>
+        </div>
+        <div>
+            <label for="sex">Sexe:</label>
+            <select id="sex" name="sex" required>
+                <option value="F" th:selected="${patient.sex == 'F'}">Femme</option>
+                <option value="M" th:selected="${patient.sex == 'M'}">Homme</option>
+            </select>
+        </div>
+        <div>
+            <label for="address">Adress:</label>
+            <input type="text" id="address" name="address" th:value="${patient.address}" required>
+        </div>
+        <div>
+            <label for="phone">Téléphone:</label>
+            <input type="text" id="phone" name="phone" th:value="${patient.phone}" required>
+        </div>
+        <button type="submit">Update</button>
+    </form>
+    <a th:href="@{/index}">Liste des patients</a>
+</body>
+</html>
