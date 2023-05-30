@@ -8,6 +8,12 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/**
+ * Swagger configuration
+ *
+ * @author jonathan GOUVEIA
+ * @version 1.0
+ */
 @Configuration
 @EnableWebMvc
 public class SwaggerConfiguration {
