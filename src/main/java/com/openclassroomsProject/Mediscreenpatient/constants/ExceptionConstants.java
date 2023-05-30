@@ -9,5 +9,4 @@ package com.openclassroomsProject.Mediscreenpatient.constants;
 public class ExceptionConstants {
     public static final String DEFAULT_RESOURCE_NOT_FOUND = "Resource not found";
     public static final String PATIENT_NOT_FOUND = "Could not find Patient with id: ";
-    public static final String PATIENT_ALREADY_EXIST = "Patient already exists.";
 }

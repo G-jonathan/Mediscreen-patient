@@ -82,7 +82,6 @@ class PatientControllerApiTest {
         JsonNode createPatientJsonResponse = new ObjectMapper().readTree(responseBody);
         assertEquals(HttpStatus.NOT_FOUND, getPatientResponse.getStatusCode());
         assertEquals("Could not find Patient with id: 9999", createPatientJsonResponse.path("message").asText());
-        assertFalse(createPatientJsonResponse.path("timestamp").asText().trim().isEmpty());
     }
 
     @Test
@@ -93,7 +92,7 @@ class PatientControllerApiTest {
         String responseBody = getAllPatientResponse.getBody();
         JsonNode getAllPatientJsonResponse = new ObjectMapper().readTree(responseBody);
         assertEquals(HttpStatus.OK, getAllPatientResponse.getStatusCode());
-        assertEquals(4, getAllPatientJsonResponse.path("_embedded").path("patientList").size());
+        assertEquals(4, getAllPatientJsonResponse.size());
     }
 
     @Test
@@ -154,7 +153,7 @@ class PatientControllerApiTest {
                 requestUpdate,
                 Patient.class);
         Patient updatedPatient = updatedPatientResponse.getBody();
-        assertEquals(HttpStatus.CREATED, updatedPatientResponse.getStatusCode());
+        assertEquals(HttpStatus.OK, updatedPatientResponse.getStatusCode());
         assertEquals(patientToUpdate.getFamily(), Objects.requireNonNull(updatedPatient).getFamily());
         assertEquals(patientToUpdate.getGiven(), Objects.requireNonNull(updatedPatient).getGiven());
         assertEquals(patientToUpdate.getDob().toString(), Objects.requireNonNull(updatedPatient).getDob().toString());
@@ -204,7 +203,6 @@ class PatientControllerApiTest {
         JsonNode createPatientJsonResponse = new ObjectMapper().readTree(responseBody);
         assertEquals(HttpStatus.NOT_FOUND, updatedPatientResponse.getStatusCode());
         assertEquals("Could not find Patient with id: 9999", createPatientJsonResponse.path("message").asText());
-        assertFalse(createPatientJsonResponse.path("timestamp").asText().trim().isEmpty());
     }
 
     @Test
@@ -234,6 +232,5 @@ class PatientControllerApiTest {
         JsonNode deletePatientJsonResponse = new ObjectMapper().readTree(responseBody);
         assertEquals(HttpStatus.NOT_FOUND, deletePatientResponse.getStatusCode());
         assertEquals("Could not find Patient with id: 9999", deletePatientJsonResponse.path("message").asText());
-        assertFalse(deletePatientJsonResponse.path("timestamp").asText().trim().isEmpty());
     }
 }

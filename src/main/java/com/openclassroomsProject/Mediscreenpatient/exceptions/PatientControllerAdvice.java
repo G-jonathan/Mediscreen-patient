@@ -1,6 +1,9 @@
 package com.openclassroomsProject.Mediscreenpatient.exceptions;
 
 import com.openclassroomsProject.Mediscreenpatient.constants.ExceptionConstants;
+import com.openclassroomsProject.Mediscreenpatient.controller.PatientControllerApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class PatientControllerAdvice extends ResponseEntityExceptionHandler {
+    private final Logger LOGGER = LoggerFactory.getLogger(PatientControllerAdvice.class);
 
     /**
      * Used to render an HTTP 404 and a body message when a PatientNotFoundException is thrown

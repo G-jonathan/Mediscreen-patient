@@ -1,22 +1,16 @@
 package com.openclassroomsProject.Mediscreenpatient.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import com.openclassroomsProject.Mediscreenpatient.exceptions.PatientNotFoundException;
 import com.openclassroomsProject.Mediscreenpatient.model.Patient;
 import com.openclassroomsProject.Mediscreenpatient.service.IPatientService;
-import com.openclassroomsProject.Mediscreenpatient.utils.PatientModelAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * REST Controller for Patient resource
@@ -31,9 +25,6 @@ public class PatientControllerApi {
     @Autowired
     IPatientService patientService;
 
-    @Autowired
-    PatientModelAssembler patientModelAssembler;
-
     /**
      * GET Request, get Patient by id.
      *
@@ -41,11 +32,11 @@ public class PatientControllerApi {
      * @return HTTP Response with status code 200 and the requested resource.
      */
     @GetMapping("/api/patients/{id}")
-    public ResponseEntity<EntityModel<Patient>> getPatientById(@PathVariable int id) {
+    public ResponseEntity<Patient> getPatientById(@PathVariable int id) {
         LOGGER.info("[CONTROLLER] Request URL: GET /api/patients/{id}");
         Patient patient = patientService.getPatientById(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
-        return ResponseEntity.ok(patientModelAssembler.toModel(patient));
+        return ResponseEntity.ok(patient);
     }
 
     /**
@@ -54,29 +45,23 @@ public class PatientControllerApi {
      * @return HTTP Response with status code 200 and a collection of all patients found in the database.
      */
     @GetMapping("/api/patients")
-    public ResponseEntity<CollectionModel<EntityModel<Patient>>> getAllPatient() {
+    public ResponseEntity<List<Patient>> getAllPatient() {
         LOGGER.info("[CONTROLLER] Request URL: GET /api/patients");
-        List<EntityModel<Patient>> patientsList = patientService.getAllPatients().stream()
-                .map(patientModelAssembler::toModel)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(CollectionModel.of(patientsList,
-                linkTo(methodOn(PatientControllerApi.class).getAllPatient()).withSelfRel()));
+        List<Patient> patientsList = patientService.getAllPatients();
+        return ResponseEntity.ok(patientsList);
     }
 
     /**
      * POST Request, create a new a Patient.
      *
      * @param newPatient The patient to create.
-     * @return HTTP Response wit status code 201 and the created resource.
+     * @return HTTP Response with status code 201 and the created resource.
      */
     @PostMapping("/api/patients")
-    public ResponseEntity<EntityModel<Patient>> addPatient(@Valid @RequestBody Patient newPatient) {
-        LOGGER.info("[CONTROLLER] Request URL: POST /api/patients");
-        EntityModel<Patient> patientEntityModel = patientModelAssembler
-                .toModel(patientService.addPatient(newPatient));
-        return ResponseEntity
-                .created(patientEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(patientEntityModel);
+    public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient newPatient) {
+        LOGGER.info("[CONTROLLER] Request URL: POST /api/patients [PARAM]-> newPatient : " + newPatient);
+        Patient patientCreated = patientService.addPatient(newPatient);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientCreated);
     }
 
     /**
@@ -87,15 +72,12 @@ public class PatientControllerApi {
      * @return HTTP response with status code 201 and the modified resource.
      */
     @PutMapping("/api/patients/{id}")
-    public ResponseEntity<EntityModel<Patient>> updatePatient(@Valid @RequestBody Patient newPatient, @PathVariable int id) {
+    public ResponseEntity<Patient> updatePatient(@Valid @RequestBody Patient newPatient, @PathVariable int id) {
         LOGGER.info("[CONTROLLER] Request URL: PUT /api/patients/{id}");
         Patient actualPatient = patientService.getPatientById(id)
                 .orElseThrow(() -> new PatientNotFoundException(id));
         Patient updatedPatient = patientService.updatePatient(actualPatient, newPatient);
-        EntityModel<Patient> patientEntityModel = patientModelAssembler.toModel(updatedPatient);
-        return ResponseEntity
-                .created(patientEntityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(patientEntityModel);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
     }
 
     /**

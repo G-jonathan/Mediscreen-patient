@@ -1,5 +1,6 @@
 package com.openclassroomsProject.Mediscreenpatient.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.openclassroomsProject.Mediscreenpatient.constants.ValidationConstants;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ public class Patient {
     @NotNull(message = ValidationConstants.NOT_NULL)
     private String given;
     @NotNull(message = ValidationConstants.NOT_NULL)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "Europe/Paris", timezone = "Europe/Paris")
     private Date dob;
     @Size(min = 1, max = 1, message = ValidationConstants.WRONG_FORMAT)
     @NotNull(message = ValidationConstants.NOT_NULL)
